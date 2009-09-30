@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>YUI Data Table Grouper Example</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/fonts/fonts-min.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/datatable/assets/skins/sam/datatable.css" />
+    <link rel="stylesheet" type="text/css" href="assets/datatablegrouper.css" />
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/dragdrop/dragdrop-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/datasource/datasource-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/datatable/datatable.js"></script>
+    <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript" src="datatablegrouper.js"></script>
+</head>
+<body class="yui-skin-sam">
+<div id="dtContainer"></div>
+<script type="text/javascript">
+
+    // Define the columns for the data table
+    // Note that you should not include the column you want to group by
+    var myColumnDefs = [
+        { key: "city", label: "City", sortable: true, resizeable: true, width: 200, editor:new YAHOO.widget.TextboxCellEditor({disableBtns:false})},
+        { key: "name", label: "Name", sortable: true, resizeable: true, width: 150 }
+    ];
+
+    // Initialise the data source
+    // Ensure that you also include the field to group by in the responseSchema
+    var myDataSource = new YAHOO.util.DataSource(data.addresses); // See data.js
+    myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+    myDataSource.responseSchema = {
+        fields: ["state", "city", "name"]
+    };
+
+    // Create a DataTableGrouper, passing the name of the field to group by
+    var myGrouper = new DataTableGrouper("state");
+
+    // Create a YUI DataTable based on the supplied columns & data source
+    var myDataTable = new YAHOO.widget.DataTable("dtContainer",
+        myColumnDefs, myDataSource,
+        {
+            // The following row formatter must be specified in order for the grouping
+            // to occur.
+            formatRow: function(el, record) { return myGrouper.rowFormatter(el, record) }
+        });
+
+    // cell editing
+    myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
+
+    // Demonstrate row selection
+    myDataTable.subscribe("rowClickEvent", myDataTable.onEventSelectRow);
+
+    // Demonstrate group selection
+    myGrouper.onGroupClick.subscribe(myGrouper.onEventSelectGroup);
+
+    // Initialise the DataTableGrouper
+    myGrouper.init(myDataTable);
+
+</script>
+</body>
+</html>
