@@ -11,7 +11,7 @@
     <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/datasource/datasource-min.js"></script>
     <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/datatable/datatable.js"></script>
     <script type="text/javascript" src="data.js"></script>
-    <script type="text/javascript" src="datatablegrouper.js"></script>
+    <script type="text/javascript" src="groupeddatatable.js"></script>
 </head>
 <body class="yui-skin-sam">
 <div id="dtContainer"></div>
@@ -32,26 +32,21 @@
         fields: ["state", "city", "name"]
     };
 
-    // Create a DataTableGrouper, passing the name of the field to group by
-    var myGrouper = new DataTableGrouper("state");
-
     // Create a YUI DataTable based on the supplied columns & data source
-    var myDataTable = new YAHOO.widget.DataTable("dtContainer",
+    var myDataTable = new YAHOO.widget.GroupedDataTable("dtContainer",
         myColumnDefs, myDataSource,
         {
-            // The following row formatter must be specified in order for the grouping
-            // to occur.
-            formatRow: function(el, record) { return myGrouper.rowFormatter(el, record) }
+          groupBy: "state"
         });
 
     // Demonstrate row selection
     myDataTable.subscribe("rowClickEvent", myDataTable.onEventSelectRow);
 
     // Demonstrate group selection
-    myGrouper.onGroupClick.subscribe(myGrouper.onEventSelectGroup); 
+    myGrouper.onGroupClick.subscribe(myGrouper.onEventSelectGroup);
 
-    // Initialise the DataTableGrouper
-    myGrouper.init(myDataTable);
+    // Demonstrate group selection
+    myDataTable.onGroupClick.subscribe(myDataTable.onEventSelectGroup, myDataTable);
 
 </script>
 </body>
