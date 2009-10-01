@@ -1,5 +1,5 @@
 (function() {
-    var Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
+    var Dom = YAHOO.util.Dom, Event = YAHOO.util.Event, Lang = YAHOO.lang, DT = YAHOO.widget.DataTable;
 
     var GroupedDataTable = function( elContainer , aColumnDefs , oDataSource , oConfigs ) {
 
@@ -19,15 +19,15 @@
 
         this.initGroups(); // Not required but prevents flickering
 
-            // Re-initialise the groups when data is changed
-            this.subscribe("sortedByChange", function() { this.initGroups() }); // Not required but prevents flickering
-            this.subscribe("renderEvent", function() { this.initGroups() });
+        // Re-initialise the groups when data is changed
+        this.subscribe("sortedByChange", function() { this.initGroups() }); // Not required but prevents flickering
+        this.subscribe("renderEvent", function() { this.initGroups() });
 
-            // Update group widths when columns are resized
-            this.subscribe("columnSetWidthEvent", function() { this.resizeGroups() });
+        // Update group widths when columns are resized
+        this.subscribe("columnSetWidthEvent", function() { this.resizeGroups() });
 
-            // Unselect any group when a row is clicked
-            this.subscribe("rowClickEvent", function() { this.unselectGroup() });
+        // Unselect any group when a row is clicked
+        this.subscribe("rowClickEvent", function() { this.unselectGroup() });
     };
 
     YAHOO.widget.GroupedDataTable = GroupedDataTable;
@@ -144,12 +144,17 @@
         * @private
         */
         insertGroup : function(name, row) {
-            var group = document.createElement("div");
+            var index = this.getRecordIndex(row)
+            // this.addGroupRow({city:name}, index);
+
+            var group = document.createElement("tr");
+            var groupCell = document.createElement("td");
+            var numberOfColumns = this.getColumnSet().keys.length;
             var icon = document.createElement("div");
 
             // Row is expanded by default
             group.className = "group group-expanded";
-
+            groupCell.setAttribute("colspan", numberOfColumns);
             if (Dom.hasClass(row, "yui-dt-first")) {
                 // If this is the first row in the table, transfer the class to the group
                 Dom.removeClass(row, "yui-dt-first");
@@ -169,14 +174,14 @@
             label.innerHTML = name;
             label.className = "label";
             liner.appendChild(label);
-            group.appendChild(liner);
+            groupCell.appendChild(liner);
+            group.appendChild(groupCell);
 
             // Set the width of the group
-            this.setGroupWidth(group, row);
+            //            this.setGroupWidth(group, row);
 
             // Insert the group
-            var cell = row.cells[0];
-            Dom.insertBefore(group, cell.childNodes[0]);
+            Dom.insertBefore(group, row);
 
             // Attach visibility toggle to icon click
             Event.addListener(icon, "click", this.toggleVisibility );
@@ -253,7 +258,6 @@
         */
         toggleVisibility : function(e) {
             var group = Dom.getAncestorByClassName(Event.getTarget(e), "group");
-            var row = Dom.getAncestorByTagName(group, "tr");
             var visibleState;
 
             // Change the class of the group
@@ -266,19 +270,10 @@
                 Dom.replaceClass(group, "group-collapsed", "group-expanded");
             }
 
-            // Change the class of the first row
-            if (!visibleState) {
-                Dom.replaceClass(row, "group-first-row", "group-first-row-collapsed");
-            }
-            else {
-                Dom.replaceClass(row, "group-first-row-collapsed", "group-first-row");
-            }
-
             // Hide all subsequent rows in the group
-            row = Dom.getNextSibling(row);
-
-            while (row && !Dom.hasClass(row, "group-first-row") &&
-                !Dom.hasClass(row, "group-first-row-collapsed")) {
+            row = Dom.getNextSibling(group);
+            while (row && !Dom.hasClass(row, "group") &&
+                !Dom.hasClass(row, "group-collapsed")) {
                 if (visibleState) {
                     row.style.display = "table-row";
                 }
