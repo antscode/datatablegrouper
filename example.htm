@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>YUI Data Table Grouper Example</title>
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/fonts/fonts-min.css" />
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/datatable/assets/skins/sam/datatable.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0/build/fonts/fonts-min.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0/build/datatable/assets/skins/sam/datatable.css" />
     <link rel="stylesheet" type="text/css" href="assets/datatablegrouper.css" />
-    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/dragdrop/dragdrop-min.js"></script>
-    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
-    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/datasource/datasource-min.js"></script>
-    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/datatable/datatable.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0/build/dragdrop/dragdrop-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0/build/element/element-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0/build/datasource/datasource-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0/build/datatable/datatable.js"></script>
     <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript" src="groupeddatatable.js"></script>
 </head>
@@ -41,9 +41,6 @@
 
     // Demonstrate row selection
     myDataTable.subscribe("rowClickEvent", myDataTable.onEventSelectRow);
-
-    // Demonstrate group selection
-    myGrouper.onGroupClick.subscribe(myGrouper.onEventSelectGroup);
 
     // Demonstrate group selection
     myDataTable.onGroupClick.subscribe(myDataTable.onEventSelectGroup, myDataTable);

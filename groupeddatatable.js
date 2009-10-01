@@ -283,6 +283,40 @@
 
                 row = Dom.getNextSibling(row);
             }
+        },
+
+        getPreviousTrEl : function(row) {
+            currentRow = row;
+            previousRow = GroupedDataTable.superclass.getPreviousTrEl.call(this, currentRow);
+            firstRow = this.getFirstTrEl();
+
+            while(previousRow !== firstRow) {
+                if(Dom.hasClass(previousRow, "group")) {
+                    previousRow = GroupedDataTable.superclass.getPreviousTrEl.call(this, previousRow);
+                } else {
+                    return previousRow;
+                }
+            }
+
+            return currentRow;
+        },
+
+        getNextTrEl : function(row) {
+            nextRow = GroupedDataTable.superclass.getNextTrEl.call(this, row);
+            lastRow = this.getLastTrEl();
+
+            while(nextRow !== lastRow) {
+                if(Dom.hasClass(nextRow, "group")) {
+                    nextRow = GroupedDataTable.superclass.getNextTrEl.call(this, nextRow);
+                } else {
+                    return nextRow;
+                }
+            }
+
+            return lastRow;
         }
+
+        // destroy - should remove any events we've created and call the superclass
+
     });
 })();
