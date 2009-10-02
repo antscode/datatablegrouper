@@ -7,14 +7,13 @@
     background-image: url(http://yui.yahooapis.com/2.7.0/build/assets/skins/sam/sprite.png);
     background-position: 0px -1300px;
     color: black;
-    cursor: default;
+    cursor: pointer;
 }
 
 /* Group inner style */
 .yui-skin-sam .yui-dt .group .liner
 {
     padding: 4px 10px;
-    border-right: 1px solid #CBCBCB;
 }
 
 /* Selected group */
@@ -25,9 +24,10 @@
     color: White;
 }
 
-/* Make the group headers scroll with the other rows */
-.yui-dt-scrollable .yui-dt-bd {
-    //position:relative;
+/* Disabled group */
+.yui-skin-foodstorm .yui-dt .group-disabled
+{
+    cursor: default;
 }
 
 /* The first group in the data table */
@@ -59,6 +59,7 @@
     width: 18px;
     height: 15px;
     position: absolute;
+    cursor: pointer;
 }
 
 /* The label within the group */
