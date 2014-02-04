@@ -130,7 +130,7 @@
 
             // Row is expanded by default
             group.className = "group group-expanded";
-            groupCell.setAttribute("colspan", numberOfColumns);
+            groupCell.setAttribute("colSpan", numberOfColumns);
             if (Dom.hasClass(row, "yui-dt-first")) {
                 // If this is the first row in the table, transfer the class to the group
                 Dom.removeClass(row, "yui-dt-first");
